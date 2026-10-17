@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Possession Sepak Bola</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #052e16;
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(34, 197, 94, 0.28), transparent 32rem),
+                radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.18), transparent 28rem),
+                linear-gradient(to bottom, rgba(255,255,255,0.07) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px);
+            background-size: auto, auto, 50px 50px, 50px 50px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .pitch-decoration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(30rem, 70vw);
+            height: min(30rem, 70vw);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .pitch-line {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 20px 45px rgba(2, 44, 34, 0.22);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title-icon {
+            display: grid;
+            place-items: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.75rem;
+            background: #dcfce7;
+            font-size: 1.2rem;
+        }
+
+        .stat-input {
+            background: rgba(248, 250, 252, 0.9);
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .stat-input:focus {
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+        }
+
+        .team-name-input {
+            background: rgba(248, 250, 252, 0.9);
+            font-weight: 600;
+        }
+
+        .team-name-input:focus {
+            background: #ffffff;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f0fdf4, #eff6ff);
+            border: 1px solid #bbf7d0;
+        }
+
+        .live-team-button {
+            min-height: 9rem;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        .live-team-button:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 640px) {
+            .live-team-button {
+                min-height: 7rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 text-gray-800 flex flex-col items-center">
+
+    <div class="pitch-decoration"></div>
+    <div class="pitch-line"></div>
+
+    <header class="text-center mb-8 text-white w-full max-w-4xl">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-green-100 ring-1 ring-white/20 mb-4">
+            <span>⚽</span> Matchday Statistics
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black mb-3 uppercase tracking-tight drop-shadow-md">Kalkulator Pertandingan</h1>
+        <p class="text-green-100 text-base md:text-lg">Pantau possession, shot on target, dan akurasi secara real-time</p>
+    </header>
+
+    <section class="glass-panel p-6 md:p-7 rounded-3xl w-full max-w-4xl mb-6">
+        <h2 class="section-title text-xl font-bold mb-5 text-green-900">
+            <span class="section-title-icon">👥</span> Identitas Pertandingan
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="teamNameA" class="block text-sm font-semibold mb-1 text-blue-700">Nama Tim A</label>
+                <input type="text" id="teamNameA" value="Tim A" maxlength="40"
+                    class="team-name-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+            </div>
+            <div>
+                <label for="teamNameB" class="block text-sm font-semibold mb-1 text-red-700">Nama Tim B</label>
+                <input type="text" id="teamNameB" value="Tim B" maxlength="40"
+                    class="team-name-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
+            </div>
+        </div>
+    </section>
+
+    <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- FITUR 1: Kalkulator Berdasarkan Tembakan -->
+        <section class="glass-panel p-6 md:p-7 rounded-3xl shadow-xl flex flex-col">
+            <h2 class="section-title text-xl font-bold mb-2 text-green-900">
+                <span class="section-title-icon">🎯</span> Statistik Tembakan
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Masukkan shot on target dan total shot untuk setiap tim.</p>
+            
+            <div class="flex-1 space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-blue-700"><span id="shotsLabelA">Tim A</span> - Shot on Target</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="shotsOnTargetA" placeholder="Contoh: 5" min="0" step="1" class="stat-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <button type="button" onclick="incrementShot('shotsOnTargetA')" aria-label="Tambah shot on target Tim A" class="w-14 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-2xl font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-blue-700"><span id="totalShotsLabelA">Tim A</span> - Total Shot</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="totalShotsA" placeholder="Contoh: 10" min="0" step="1" class="stat-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <button type="button" onclick="incrementShot('totalShotsA')" aria-label="Tambah total shot Tim A" class="w-14 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-2xl font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-red-700"><span id="shotsLabelB">Tim B</span> - Shot on Target</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="shotsOnTargetB" placeholder="Contoh: 3" min="0" step="1" class="stat-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
+                        <button type="button" onclick="incrementShot('shotsOnTargetB')" aria-label="Tambah shot on target Tim B" class="w-14 rounded-xl bg-red-600 hover:bg-red-700 text-white text-2xl font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-red-700"><span id="totalShotsLabelB">Tim B</span> - Total Shot</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="totalShotsB" placeholder="Contoh: 8" min="0" step="1" class="stat-input w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition">
+                        <button type="button" onclick="incrementShot('totalShotsB')" aria-label="Tambah total shot Tim B" class="w-14 rounded-xl bg-red-600 hover:bg-red-700 text-white text-2xl font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="calculateShots()" class="w-full mt-6 bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-4 rounded-xl transition transform active:scale-95 shadow-lg shadow-green-900/20">
+                Hitung Statistik Tembakan
+            </button>
+
+            <!-- Hasil Tembakan -->
+            <div id="shotResult" class="result-card mt-6 p-4 rounded-2xl hidden">
+                <div class="flex justify-between font-bold mb-1">
+                    <span class="text-blue-700"><span id="shotResultLabelA">Tim A</span>: <span id="pctA">0</span>%</span>
+                    <span class="text-red-700"><span id="shotResultLabelB">Tim B</span>: <span id="pctB">0</span>%</span>
+                </div>
+                <div class="w-full h-6 bg-red-500 rounded-full overflow-hidden flex shadow-inner">
+                    <div id="barA" class="h-full bg-blue-500 transition-all duration-500 ease-out" style="width: 50%;"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-4 text-sm font-semibold">
+                    <div class="text-blue-700"><span id="accuracyLabelA">Tim A</span> - Akurasi: <span id="accuracyA">0</span>%</div>
+                    <div class="text-red-700"><span id="accuracyLabelB">Tim B</span> - Akurasi: <span id="accuracyB">0</span>%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FITUR 2: Live Tracker Berdasarkan Waktu -->
+        <section class="glass-panel p-6 md:p-7 rounded-3xl shadow-xl flex flex-col">
+            <h2 class="section-title text-xl font-bold mb-2 text-green-900">
+                <span class="section-title-icon">⏱️</span> Live Tracker Waktu
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Klik tombol saat tim menguasai bola.</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <button id="btnTeamA" onclick="setPossession('A')" class="live-team-button py-8 rounded-2xl font-bold text-lg md:text-xl border-4 border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 transition relative overflow-hidden shadow-sm">
+                    <span id="buttonLabelA">Tim A</span><br><span class="text-sm font-normal">Kuasai Bola</span>
+                </button>
+                <button id="btnTeamB" onclick="setPossession('B')" class="live-team-button py-8 rounded-2xl font-bold text-lg md:text-xl border-4 border-transparent bg-red-100 text-red-800 hover:bg-red-200 transition relative overflow-hidden shadow-sm">
+                    <span id="buttonLabelB">Tim B</span><br><span class="text-sm font-normal">Kuasai Bola</span>
+                </button>
+            </div>
+
+            <!-- Timer Displays -->
+            <div class="flex justify-between text-center mb-6">
+                <div class="w-1/2">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Waktu <span id="timeLabelA">Tim A</span></div>
+                    <div id="timeDisplayA" class="text-3xl font-mono font-black text-blue-700">00:00</div>
+                </div>
+                <div class="w-1/2 border-l">
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Waktu <span id="timeLabelB">Tim B</span></div>
+                    <div id="timeDisplayB" class="text-3xl font-mono font-black text-red-700">00:00</div>
+                </div>
+            </div>
+
+            <!-- Hasil Live Timer -->
+            <div class="mt-auto">
+                <div class="flex justify-between font-bold mb-1">
+                    <span class="text-blue-700"><span id="liveLabelA">Tim A</span>: <span id="livePctA">50.0</span>%</span>
+                    <span class="text-red-700"><span id="liveLabelB">Tim B</span>: <span id="livePctB">50.0</span>%</span>
+                </div>
+                <div class="w-full h-7 bg-red-500 rounded-full overflow-hidden flex shadow-inner mb-4">
+                    <div id="liveBarA" class="h-full bg-blue-500 transition-all duration-300" style="width: 50%;"></div>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button onclick="stopTimer()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md">Jeda</button>
+                    <button onclick="resetTimer()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md">Reset</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Logika Kalkulator Berdasarkan Tembakan ---
+        function incrementShot(inputId) {
+            const input = document.getElementById(inputId);
+            const currentValue = Number(input.value) || 0;
+            input.value = currentValue + 1;
+        }
+
+        function calculateShots() {
+            const shotsOnTargetA = Number(document.getElementById('shotsOnTargetA').value);
+            const totalShotsA = Number(document.getElementById('totalShotsA').value);
+            const shotsOnTargetB = Number(document.getElementById('shotsOnTargetB').value);
+            const totalShotsB = Number(document.getElementById('totalShotsB').value);
+            const values = [shotsOnTargetA, totalShotsA, shotsOnTargetB, totalShotsB];
+            const totalOnTarget = shotsOnTargetA + shotsOnTargetB;
+
+            const resultDiv = document.getElementById('shotResult');
+            if (values.some(value => !Number.isInteger(value) || value < 0) ||
+                shotsOnTargetA > totalShotsA || shotsOnTargetB > totalShotsB) {
+                alert("Mohon masukkan jumlah shot yang valid. Shot on target tidak boleh lebih besar dari total shot.");
+                resultDiv.classList.add('hidden');
+                return;
+            }
+
+            if (totalOnTarget === 0) {
+                alert("Masukkan setidaknya satu shot on target untuk menghitung persentase.");
+                resultDiv.classList.add('hidden');
+                return;
+            }
+
+            const pctA = ((shotsOnTargetA / totalOnTarget) * 100).toFixed(1);
+            const pctB = ((shotsOnTargetB / totalOnTarget) * 100).toFixed(1);
+            const accuracyA = totalShotsA === 0 ? 0 : ((shotsOnTargetA / totalShotsA) * 100).toFixed(1);
+            const accuracyB = totalShotsB === 0 ? 0 : ((shotsOnTargetB / totalShotsB) * 100).toFixed(1);
+
+            document.getElementById('pctA').innerText = pctA;
+            document.getElementById('pctB').innerText = pctB;
+            document.getElementById('accuracyA').innerText = accuracyA;
+            document.getElementById('accuracyB').innerText = accuracyB;
+            document.getElementById('barA').style.width = pctA + '%';
+            
+            resultDiv.classList.remove('hidden');
+        }
+
+        // --- Logika Live Tracker Berdasarkan Waktu ---
+        let timeA = 0; // dalam milidetik
+        let timeB = 0;
+        let activeTeam = null;
+        let timerInterval = null;
+        let lastTick = 0;
+
+        const btnA = document.getElementById('btnTeamA');
+        const btnB = document.getElementById('btnTeamB');
+        const teamNameAInput = document.getElementById('teamNameA');
+        const teamNameBInput = document.getElementById('teamNameB');
+
+        function getTeamName(input, defaultName) {
+            return input.value.trim() || defaultName;
+        }
+
+        function updateTeamNames() {
+            const teamNameA = getTeamName(teamNameAInput, 'Tim A');
+            const teamNameB = getTeamName(teamNameBInput, 'Tim B');
+            const teamNameElements = [
+                ['shotsLabelA', teamNameA],
+                ['totalShotsLabelA', teamNameA],
+                ['shotsLabelB', teamNameB],
+                ['totalShotsLabelB', teamNameB],
+                ['shotResultLabelA', teamNameA],
+                ['shotResultLabelB', teamNameB],
+                ['accuracyLabelA', teamNameA],
+                ['accuracyLabelB', teamNameB],
+                ['buttonLabelA', teamNameA],
+                ['buttonLabelB', teamNameB],
+                ['timeLabelA', teamNameA],
+                ['timeLabelB', teamNameB],
+                ['liveLabelA', teamNameA],
+                ['liveLabelB', teamNameB]
+            ];
+
+            teamNameElements.forEach(([elementId, teamName]) => {
+                document.getElementById(elementId).textContent = teamName;
+            });
+        }
+
+        teamNameAInput.addEventListener('input', updateTeamNames);
+        teamNameBInput.addEventListener('input', updateTeamNames);
+        updateTeamNames();
+
+        function setPossession(team) {
+            if (activeTeam === team) return; // Sudah aktif
+            
+            activeTeam = team;
+            lastTick = Date.now();
+            
+            // Update styling tombol
+            if (team === 'A') {
+                btnA.classList.add('border-blue-500', 'bg-blue-200', 'scale-105');
+                btnA.classList.remove('border-transparent');
+                btnB.classList.remove('border-red-500', 'bg-red-200', 'scale-105');
+                btnB.classList.add('border-transparent');
+            } else {
+                btnB.classList.add('border-red-500', 'bg-red-200', 'scale-105');
+                btnB.classList.remove('border-transparent');
+                btnA.classList.remove('border-blue-500', 'bg-blue-200', 'scale-105');
+                btnA.classList.add('border-transparent');
+            }
+
+            if (!timerInterval) {
+                timerInterval = setInterval(updateTimer, 100);
+            }
+        }
+
+        function updateTimer() {
+            const now = Date.now();
+            const delta = now - lastTick;
+            lastTick = now;
+
+            if (activeTeam === 'A') {
+                timeA += delta;
+            } else if (activeTeam === 'B') {
+                timeB += delta;
+            }
+
+            updateTrackerUI();
+        }
+
+        function stopTimer() {
+            activeTeam = null;
+            clearInterval(timerInterval);
+            timerInterval = null;
+            
+            btnA.classList.remove('border-blue-500', 'bg-blue-200', 'scale-105');
+            btnB.classList.remove('border-red-500', 'bg-red-200', 'scale-105');
+            btnA.classList.add('border-transparent');
+            btnB.classList.add('border-transparent');
+        }
+
+        function resetTimer() {
+            stopTimer();
+            timeA = 0;
+            timeB = 0;
+            updateTrackerUI();
+        }
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateTrackerUI() {
+            document.getElementById('timeDisplayA').innerText = formatTime(timeA);
+            document.getElementById('timeDisplayB').innerText = formatTime(timeB);
+
+            const total = timeA + timeB;
+            let pctA = 50.0;
+            let pctB = 50.0;
+
+            if (total > 0) {
+                pctA = ((timeA / total) * 100).toFixed(1);
+                pctB = ((timeB / total) * 100).toFixed(1);
+            }
+
+            document.getElementById('livePctA').innerText = pctA;
+            document.getElementById('livePctB').innerText = pctB;
+            document.getElementById('liveBarA').style.width = pctA + '%';
+        }
+    </script>
+</body>
+</html>
