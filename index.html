@@ -120,6 +120,26 @@
             gap: 0.5rem;
         }
 
+        .passing-grid > .passing-card:nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .passing-grid > .passing-card:nth-child(2) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .passing-grid > .passing-card:nth-child(3) {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .passing-grid > .passing-card:nth-child(4) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
         @media (max-width: 640px) {
             .live-team-button {
                 min-height: 7rem;
@@ -383,7 +403,7 @@
             </h2>
             <p class="text-sm text-gray-600 mb-3 md:mb-6">Catat jumlah passing berhasil dan gagal untuk menghitung akurasi setiap tim.</p>
 
-            <div class="grid grid-cols-2 gap-1.5 md:gap-6">
+            <div class="passing-grid grid grid-cols-2 gap-1.5 md:gap-6">
                 <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingSuccessfulLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Berhasil</h3>
                     <div class="passing-control flex flex-col items-center justify-end mt-auto">
