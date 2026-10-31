@@ -99,9 +99,35 @@
             transform: translateY(-2px);
         }
 
+        .nav-button.active {
+            background: #ffffff;
+            color: #166534;
+            box-shadow: 0 8px 18px rgba(2, 44, 34, 0.18);
+        }
+
+        .passing-card {
+            min-height: 15rem;
+        }
+
+        .passing-plus-button {
+            min-width: 5rem;
+            min-height: 5rem;
+            font-size: 3rem;
+            line-height: 1;
+        }
+
         @media (max-width: 640px) {
             .live-team-button {
                 min-height: 7rem;
+            }
+
+            .passing-card {
+                min-height: 12rem;
+            }
+
+            .passing-plus-button {
+                min-width: 4.5rem;
+                min-height: 4.5rem;
             }
         }
     </style>
@@ -118,6 +144,15 @@
         <h1 class="text-3xl md:text-5xl font-black mb-3 uppercase tracking-tight drop-shadow-md">Kalkulator Pertandingan</h1>
         <p class="text-green-100 text-base md:text-lg">Pantau possession, shot on target, dan akurasi secara real-time</p>
     </header>
+
+    <nav class="w-full max-w-7xl mb-6 rounded-2xl bg-white/15 p-1.5 ring-1 ring-white/20 flex gap-2" aria-label="Menu utama">
+        <button id="statisticsTab" type="button" onclick="showPage('statistics')" class="nav-button active flex-1 rounded-xl px-4 py-3 font-bold text-white transition">
+            📊 Statistik
+        </button>
+        <button id="passingTab" type="button" onclick="showPage('passing')" class="nav-button flex-1 rounded-xl px-4 py-3 font-bold text-white transition">
+            🔁 Passing
+        </button>
+    </nav>
 
     <section class="glass-panel p-6 md:p-7 rounded-3xl w-full max-w-7xl mb-6">
         <h2 class="section-title text-xl font-bold mb-5 text-green-900">
@@ -137,6 +172,7 @@
         </div>
     </section>
 
+    <div id="statisticsPage" class="w-full flex flex-col items-center">
     <main class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
         
         <!-- FITUR 1: Kalkulator Berdasarkan Tembakan -->
@@ -318,8 +354,103 @@
         </section>
 
     </main>
+    </div>
+
+    <section id="passingPage" class="hidden w-full max-w-7xl">
+        <div class="glass-panel p-6 md:p-7 rounded-3xl shadow-xl">
+            <h2 class="section-title text-xl font-bold mb-2 text-green-900">
+                <span class="section-title-icon">🔁</span> Statistik Passing
+            </h2>
+            <p class="text-sm text-gray-600 mb-6">Catat jumlah passing berhasil dan gagal untuk menghitung akurasi setiap tim.</p>
+
+            <div class="grid grid-cols-2 gap-3 md:gap-6">
+                <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-4 md:p-5 flex flex-col">
+                    <h3 id="passingSuccessfulLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Berhasil</h3>
+                    <div class="flex gap-2 mt-auto">
+                        <input type="number" id="successfulPassesA" value="0" min="0" step="1" aria-label="Passing berhasil Tim A" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                        <button type="button" onclick="incrementPassing('successfulPassesA')" aria-label="Tambah passing berhasil Tim A" class="passing-plus-button shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+
+                <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-4 md:p-5 flex flex-col">
+                    <h3 id="passingFailedLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Gagal</h3>
+                    <div class="flex gap-2 mt-auto">
+                        <input type="number" id="failedPassesA" value="0" min="0" step="1" aria-label="Passing gagal Tim A" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                        <button type="button" onclick="incrementPassing('failedPassesA')" aria-label="Tambah passing gagal Tim A" class="passing-plus-button shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+
+                <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-4 md:p-5 flex flex-col">
+                    <h3 id="passingSuccessfulLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Berhasil</h3>
+                    <div class="flex gap-2 mt-auto">
+                        <input type="number" id="successfulPassesB" value="0" min="0" step="1" aria-label="Passing berhasil Tim B" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                        <button type="button" onclick="incrementPassing('successfulPassesB')" aria-label="Tambah passing berhasil Tim B" class="passing-plus-button shrink-0 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+
+                <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-4 md:p-5 flex flex-col">
+                    <h3 id="passingFailedLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Gagal</h3>
+                    <div class="flex gap-2 mt-auto">
+                        <input type="number" id="failedPassesB" value="0" min="0" step="1" aria-label="Passing gagal Tim B" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                        <button type="button" onclick="incrementPassing('failedPassesB')" aria-label="Tambah passing gagal Tim B" class="passing-plus-button shrink-0 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mt-4 text-center">
+                <div class="rounded-xl bg-blue-50 p-3">
+                    <p class="text-sm text-gray-500">Akurasi <span id="passingAccuracyLabelA">Tim A</span></p>
+                    <p id="passingAccuracyA" class="text-2xl font-black text-blue-700">0.0%</p>
+                    <p id="passingTotalA" class="text-xs font-semibold text-gray-600">Total passing: 0</p>
+                </div>
+                <div class="rounded-xl bg-red-50 p-3">
+                    <p class="text-sm text-gray-500">Akurasi <span id="passingAccuracyLabelB">Tim B</span></p>
+                    <p id="passingAccuracyB" class="text-2xl font-black text-red-700">0.0%</p>
+                    <p id="passingTotalB" class="text-xs font-semibold text-gray-600">Total passing: 0</p>
+                </div>
+            </div>
+
+            <button type="button" onclick="calculatePassing()" class="w-full mt-6 bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-4 rounded-xl transition active:scale-95 shadow-lg shadow-green-900/20">
+                Hitung Akurasi Passing
+            </button>
+        </div>
+    </section>
 
     <script>
+        function showPage(page) {
+            const isStatistics = page === 'statistics';
+            document.getElementById('statisticsPage').classList.toggle('hidden', !isStatistics);
+            document.getElementById('passingPage').classList.toggle('hidden', isStatistics);
+            document.getElementById('statisticsTab').classList.toggle('active', isStatistics);
+            document.getElementById('passingTab').classList.toggle('active', !isStatistics);
+        }
+
+        function incrementPassing(inputId) {
+            const input = document.getElementById(inputId);
+            input.value = Math.max(0, Math.floor(Number(input.value) || 0)) + 1;
+            calculatePassing();
+        }
+
+        function calculatePassing() {
+            ['A', 'B'].forEach(team => {
+                const successfulInput = document.getElementById(`successfulPasses${team}`);
+                const failedInput = document.getElementById(`failedPasses${team}`);
+                const successful = Number(successfulInput.value);
+                const failed = Number(failedInput.value);
+                const values = [successful, failed];
+
+                if (values.some(value => !Number.isInteger(value) || value < 0)) {
+                    alert('Jumlah passing harus berupa bilangan bulat nol atau lebih.');
+                    return;
+                }
+
+                const total = successful + failed;
+                const accuracy = total === 0 ? 0 : (successful / total) * 100;
+                document.getElementById(`passingAccuracy${team}`).textContent = `${accuracy.toFixed(1)}%`;
+                document.getElementById(`passingTotal${team}`).textContent = `Total passing: ${total}`;
+            });
+        }
+
         // --- Logika Kalkulator Berdasarkan Tembakan ---
         function incrementShot(inputId) {
             const input = document.getElementById(inputId);
@@ -396,7 +527,13 @@
                 ['timeLabelA', teamNameA],
                 ['timeLabelB', teamNameB],
                 ['liveLabelA', teamNameA],
-                ['liveLabelB', teamNameB]
+                ['liveLabelB', teamNameB],
+                ['passingSuccessfulLabelA', `${teamNameA} - Berhasil`],
+                ['passingFailedLabelA', `${teamNameA} - Gagal`],
+                ['passingSuccessfulLabelB', `${teamNameB} - Berhasil`],
+                ['passingFailedLabelB', `${teamNameB} - Gagal`],
+                ['passingAccuracyLabelA', teamNameA],
+                ['passingAccuracyLabelB', teamNameB]
             ];
 
             teamNameElements.forEach(([elementId, teamName]) => {
