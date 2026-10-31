@@ -110,10 +110,14 @@
         }
 
         .passing-plus-button {
-            min-width: 6rem;
-            min-height: 6rem;
-            font-size: 3.5rem;
+            min-width: 8rem;
+            min-height: 8rem;
+            font-size: 4.5rem;
             line-height: 1;
+        }
+
+        .passing-control {
+            gap: 0.5rem;
         }
 
         @media (max-width: 640px) {
@@ -126,8 +130,8 @@
             }
 
             .passing-plus-button {
-                min-width: 5.5rem;
-                min-height: 5.5rem;
+                min-width: 7rem;
+                min-height: 7rem;
             }
         }
 
@@ -142,8 +146,8 @@
             }
 
             .passing-plus-button {
-                min-width: 6rem;
-                min-height: 6rem;
+                min-width: 7rem;
+                min-height: 7rem;
             }
         }
     </style>
@@ -382,32 +386,32 @@
             <div class="grid grid-cols-2 gap-1.5 md:gap-6">
                 <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingSuccessfulLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Berhasil</h3>
-                    <div class="flex gap-2 mt-auto">
-                        <input type="number" id="successfulPassesA" value="0" min="0" step="1" aria-label="Passing berhasil Tim A" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                    <div class="passing-control flex flex-col items-center justify-end mt-auto">
+                        <input type="number" id="successfulPassesA" value="0" min="0" step="1" aria-label="Passing berhasil Tim A" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
                         <button type="button" onclick="incrementPassing('successfulPassesA')" aria-label="Tambah passing berhasil Tim A" class="passing-plus-button shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
                     </div>
                 </div>
 
                 <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingFailedLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Gagal</h3>
-                    <div class="flex gap-2 mt-auto">
-                        <input type="number" id="failedPassesA" value="0" min="0" step="1" aria-label="Passing gagal Tim A" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                    <div class="passing-control flex flex-col items-center justify-end mt-auto">
+                        <input type="number" id="failedPassesA" value="0" min="0" step="1" aria-label="Passing gagal Tim A" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
                         <button type="button" onclick="incrementPassing('failedPassesA')" aria-label="Tambah passing gagal Tim A" class="passing-plus-button shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
                     </div>
                 </div>
 
                 <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingSuccessfulLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Berhasil</h3>
-                    <div class="flex gap-2 mt-auto">
-                        <input type="number" id="successfulPassesB" value="0" min="0" step="1" aria-label="Passing berhasil Tim B" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                    <div class="passing-control flex flex-col items-center justify-end mt-auto">
+                        <input type="number" id="successfulPassesB" value="0" min="0" step="1" aria-label="Passing berhasil Tim B" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
                         <button type="button" onclick="incrementPassing('successfulPassesB')" aria-label="Tambah passing berhasil Tim B" class="passing-plus-button shrink-0 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
                     </div>
                 </div>
 
                 <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingFailedLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Gagal</h3>
-                    <div class="flex gap-2 mt-auto">
-                        <input type="number" id="failedPassesB" value="0" min="0" step="1" aria-label="Passing gagal Tim B" class="stat-input w-full min-w-0 p-3 border border-gray-300 rounded-xl outline-none">
+                    <div class="passing-control flex flex-col items-center justify-end mt-auto">
+                        <input type="number" id="failedPassesB" value="0" min="0" step="1" aria-label="Passing gagal Tim B" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
                         <button type="button" onclick="incrementPassing('failedPassesB')" aria-label="Tambah passing gagal Tim B" class="passing-plus-button shrink-0 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition active:scale-95 shadow-md">+</button>
                     </div>
                 </div>
