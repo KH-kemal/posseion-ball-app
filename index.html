@@ -120,24 +120,26 @@
             gap: 0.5rem;
         }
 
-        .passing-grid > .passing-card:nth-child(1) {
-            grid-column: 1;
-            grid-row: 1;
+        .passing-grid {
+            grid-template-areas:
+                "team-a-success team-b-success"
+                "team-a-failed team-b-failed";
         }
 
-        .passing-grid > .passing-card:nth-child(2) {
-            grid-column: 1;
-            grid-row: 2;
+        .team-a-success {
+            grid-area: team-a-success;
         }
 
-        .passing-grid > .passing-card:nth-child(3) {
-            grid-column: 2;
-            grid-row: 1;
+        .team-a-failed {
+            grid-area: team-a-failed;
         }
 
-        .passing-grid > .passing-card:nth-child(4) {
-            grid-column: 2;
-            grid-row: 2;
+        .team-b-success {
+            grid-area: team-b-success;
+        }
+
+        .team-b-failed {
+            grid-area: team-b-failed;
         }
 
         @media (max-width: 640px) {
@@ -404,7 +406,7 @@
             <p class="text-sm text-gray-600 mb-3 md:mb-6">Catat jumlah passing berhasil dan gagal untuk menghitung akurasi setiap tim.</p>
 
             <div class="passing-grid grid grid-cols-2 gap-1.5 md:gap-6">
-                <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
+                <div class="passing-card team-a-success rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingSuccessfulLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Berhasil</h3>
                     <div class="passing-control flex flex-col items-center justify-end mt-auto">
                         <input type="number" id="successfulPassesA" value="0" min="0" step="1" aria-label="Passing berhasil Tim A" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
@@ -412,7 +414,7 @@
                     </div>
                 </div>
 
-                <div class="passing-card rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
+                <div class="passing-card team-a-failed rounded-2xl border border-blue-200 bg-blue-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingFailedLabelA" class="text-base md:text-lg font-black text-blue-700 mb-3">Tim A - Gagal</h3>
                     <div class="passing-control flex flex-col items-center justify-end mt-auto">
                         <input type="number" id="failedPassesA" value="0" min="0" step="1" aria-label="Passing gagal Tim A" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
@@ -420,7 +422,7 @@
                     </div>
                 </div>
 
-                <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
+                <div class="passing-card team-b-success rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingSuccessfulLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Berhasil</h3>
                     <div class="passing-control flex flex-col items-center justify-end mt-auto">
                         <input type="number" id="successfulPassesB" value="0" min="0" step="1" aria-label="Passing berhasil Tim B" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
@@ -428,7 +430,7 @@
                     </div>
                 </div>
 
-                <div class="passing-card rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
+                <div class="passing-card team-b-failed rounded-2xl border border-red-200 bg-red-50/70 p-2 md:p-5 flex flex-col">
                     <h3 id="passingFailedLabelB" class="text-base md:text-lg font-black text-red-700 mb-3">Tim B - Gagal</h3>
                     <div class="passing-control flex flex-col items-center justify-end mt-auto">
                         <input type="number" id="failedPassesB" value="0" min="0" step="1" aria-label="Passing gagal Tim B" class="stat-input w-20 p-2 text-center border border-gray-300 rounded-xl outline-none">
